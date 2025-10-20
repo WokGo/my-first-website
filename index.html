@@ -16,7 +16,27 @@
             <li><a href="contact.html">Contact</a></li>
             <li><a href="board.html">Board</a></li>
         </ul>
+        <button class="btn-login">로그인</button>
+        <button class="btn-logout" style="display:none;">로그아웃</button>
+        <span class="user-display"></span>
     </nav>
+
+    <!-- 로그인 모달 (간단 구현) -->
+    <div id="login-modal" class="modal" style="display:block; /* 스타일은 CSS로 조절하세요 */">
+      <div class="modal-content" style="max-width:400px;margin:80px auto;padding:16px;background:#fff;">
+        <h3>로그인</h3>
+        <form id="login-form">
+          <label>이름 (선택)</label>
+          <input id="login-name" type="text" />
+          <label>이메일</label>
+          <input id="login-email" type="email" required />
+          <label>비밀번호</label>
+          <input id="login-password" type="password" required />
+          <button type="submit">로그인</button>
+          <button type="button" onclick="document.getElementById('login-modal').classList.remove('open')">취소</button>
+        </form>
+      </div>
+    </div>
 
     <main>
         <h1>Welcome to My Website</h1>
