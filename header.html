@@ -1,19 +1,11 @@
-<nav class="site-header-nav">
-  <div class="brand">
-    <a href="/index.html">Miogun</a>
-  </div>
-
-  <ul class="main-nav">
-    <li><a href="/index.html">Home</a></li>
-    <li><a href="/about.html">About</a></li>
-    <li><a href="/projects.html">Projects</a></li>
-    <li><a href="/contact.html">Contact</a></li>
-    <li><a href="/board.html">Board</a></li>
-  </ul>
-
-  <div id="auth-actions" class="auth-actions">
-    <!-- JS will fill this with 로그인/회원가입 또는 사용자명/로그아웃 -->
-    <a id="login-link" class="auth-btn" href="/auth/login.html">로그인</a>
-    <a id="signup-link" class="auth-btn" href="/auth/signup.html">회원가입</a>
-  </div>
+<nav>
+  <a href="/index.html">홈</a>
+  <a href="/about.html">소개</a>
+  <a href="/board.html">게시판</a>
+  <span id="user-label"></span>
+  <button id="login-btn" onclick="location.href='/auth/login.html'">로그인</button>
+  <button id="signup-btn" onclick="location.href='/auth/signup.html'">회원가입</button>
+  <button id="logout-btn" onclick="logout()">로그아웃</button>
 </nav>
+
+<script src="/js/header.js"></script>
