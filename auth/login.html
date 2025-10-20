@@ -1,32 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="../css/auth.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>로그인 - Miogun</title>
+  <link rel="stylesheet" href="/css/auth.css" />
+  <link rel="stylesheet" href="/css/header.css" />
 </head>
 <body>
-    <div class="auth-container">
-        <h2>Login</h2>
-        <form id="loginForm" action="/auth/login" method="POST">
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <div class="form-group">
-                <label>
-                    <input type="checkbox" name="remember"> Remember me
-                </label>
-            </div>
-            <button type="submit">Login</button>
-        </form>
-        <p>Don't have an account? <a href="signup.html">Sign up</a></p>
-    </div>
-    <script src="../js/auth.js"></script>
+  <!-- header will be injected here -->
+  <header id="site-header"></header>
+
+  <main class="container">
+    <section class="auth-box">
+      <h2>로그인</h2>
+
+      <form id="loginForm" class="auth-form" novalidate>
+        <div class="form-row">
+          <label for="login-email">이메일</label>
+          <input id="login-email" name="email" type="email" required />
+        </div>
+
+        <div class="form-row">
+          <label for="login-password">비밀번호</label>
+          <input id="login-password" name="password" type="password" required minlength="6" />
+        </div>
+
+        <div class="form-row form-row-inline">
+          <label><input type="checkbox" id="remember" name="remember" /> 로그인 유지</label>
+        </div>
+
+        <div id="login-general-error" class="error-message" aria-live="polite" style="display:none"></div>
+
+        <div class="form-row">
+          <button type="submit" class="primary">로그인</button>
+          <a href="/index.html" class="button secondary">취소</a>
+        </div>
+      </form>
+
+      <p class="muted">계정이 없으신가요? <a href="/auth/signup.html">회원가입</a></p>
+    </section>
+  </main>
+
+  <script src="/js/header.js"></script>
+  <script src="/js/auth.js"></script>
 </body>
 </html>
