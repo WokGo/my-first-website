@@ -1,95 +1,55 @@
-// auth.js - form handling and mock auth (updates localStorage to represent session)
-document.addEventListener('DOMContentLoaded', () => {
-  const loginForm = document.getElementById('loginForm');
-  const signupForm = document.getElementById('signupForm');
+// js/auth.js
 
-  if (loginForm) loginForm.addEventListener('submit', handleLogin);
-  if (signupForm) signupForm.addEventListener('submit', handleSignup);
-});
+// 회원가입 처리
+function signup(event) {
+  event.preventDefault();
 
-async function handleLogin(e) {
-  e.preventDefault();
-  clearError('login-general-error');
-  const email = document.getElementById('login-email').value.trim();
-  const password = document.getElementById('login-password').value;
-  const remember = document.getElementById('remember')?.checked;
+  const id = document.getElementById("signup-id").value.trim();
+  const pw = document.getElementById("signup-password").value.trim();
 
-  if (!validateEmail(email)) return showError('login-general-error', '유효한 이메일을 입력하세요.');
-  if (!password || password.length < 6) return showError('login-general-error', '비밀번호를 확인하세요.');
-
-  try {
-    // TODO: Replace mock with real API call
-    const res = await mockLoginAPI(email, password);
-    if (res.success) {
-      // Save "session" in localStorage (for demo). Replace with secure token storage via backend.
-      const user = { username: res.username || email.split('@')[0], email };
-      localStorage.setItem('authUser', JSON.stringify(user));
-      if (res.token) localStorage.setItem('authToken', res.token);
-      // Redirect to dashboard or previous page
-      window.location.href = '/index.html';
-    } else {
-      showError('login-general-error', res.message || '로그인 실패');
-    }
-  } catch (err) {
-    showError('login-general-error', '서버 오류가 발생했습니다. 다시 시도해주세요.');
+  if (!id || !pw) {
+    alert("아이디와 비밀번호를 입력하세요.");
+    return;
   }
-}
 
-async function handleSignup(e) {
-  e.preventDefault();
-  clearError('signup-general-error');
-  const username = document.getElementById('signup-username').value.trim();
-  const email = document.getElementById('signup-email').value.trim();
-  const password = document.getElementById('signup-password').value;
-  const confirmPassword = document.getElementById('signup-confirmPassword').value;
+  const users = JSON.parse(localStorage.getItem("users")) || {};
 
-  if (!username || username.length < 3) return showError('signup-general-error', '사용자 이름은 3자 이상이어야 합니다.');
-  if (!validateEmail(email)) return showError('signup-general-error', '유효한 이메일을 입력하세요.');
-  if (!password || password.length < 8) return showError('signup-general-error', '비밀번호는 최소 8자 이상이어야 합니다.');
-  if (password !== confirmPassword) return showError('signup-general-error', '비밀번호가 일치하지 않습니다.');
-
-  try {
-    // TODO: Replace mock with real API call
-    const res = await mockSignupAPI(username, email, password);
-    if (res.success) {
-      // Optionally auto-login, here redirect to login page
-      window.location.href = '/auth/login.html';
-    } else {
-      showError('signup-general-error', res.message || '회원가입 실패');
-    }
-  } catch (err) {
-    showError('signup-general-error', '서버 오류가 발생했습니다. 다시 시도해주세요.');
+  if (users[id]) {
+    alert("이미 존재하는 아이디입니다.");
+    return;
   }
+
+  users[id] = { password: pw };
+  localStorage.setItem("users", JSON.stringify(users));
+
+  alert("회원가입 성공! 로그인 페이지로 이동합니다.");
+  window.location.href = "/auth/login.html";
 }
 
-// Helpers
-function validateEmail(email) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
-function showError(id, msg) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  el.style.display = 'block';
-  el.textContent = msg;
-}
-function clearError(id) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  el.style.display = 'none';
-  el.textContent = '';
-}
+// 로그인 처리
+function login(event) {
+  event.preventDefault();
 
-// Mock APIs (replace with fetch to your backend)
-async function mockLoginAPI(email, password) {
-  await new Promise(r => setTimeout(r, 600));
-  // simple demo rule: any password 'password' or length>=6 succeeds
-  if (password.length >= 6) {
-    return { success: true, username: email.split('@')[0], token: 'demo-token' };
+  const id = document.getElementById("login-id").value.trim();
+  const pw = document.getElementById("login-password").value.trim();
+
+  const users = JSON.parse(localStorage.getItem("users")) || {};
+
+  if (!users[id] || users[id].password !== pw) {
+    alert("아이디 또는 비밀번호가 일치하지 않습니다.");
+    return;
   }
-  return { success: false, message: '잘못된 인증 정보' };
+
+  localStorage.setItem("isLoggedIn", "true");
+  localStorage.setItem("currentUser", id);
+
+  alert(`${id}님 환영합니다!`);
+  window.location.href = "/index.html";
 }
-async function mockSignupAPI(username, email, password) {
-  await new Promise(r => setTimeout(r, 800));
-  // demo success
-  return { success: true, message: '회원가입이 완료되었습니다' };
+
+// 로그아웃 처리
+function logout() {
+  localStorage.removeItem("isLoggedIn");
+  localStorage.removeItem("currentUser");
+  window.location.href = "/index.html";
 }
